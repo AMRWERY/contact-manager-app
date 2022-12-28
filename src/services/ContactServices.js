@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export class ContactServices {
-    static serverUrl = `http://localhost:3000`;
+    static serverUrl = `https://my-json-server.typicode.com/AhmedAbdelfattah0/json-server`;
 
     static getAllContacts() {
         const dataUrl = `${this.serverUrl}/contacts`;
