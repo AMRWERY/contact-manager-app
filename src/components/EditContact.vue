@@ -10,28 +10,29 @@
   <div class="container mt-3">
     <div class="row">
       <div class="col-md-4">
-        <form>
+        <form @submit.prevent="submitUpdate()">
           <div class="mb-2">
-            <input type="text" class="form-control" placeholder="Name">
+            <input required v-model="contact.name" type="text" class="form-control" placeholder="Name">
           </div>
           <div class="mb-2">
-            <input type="text" class="form-control" placeholder="Photo URl">
+            <input required v-model="contact.photo" type="text" class="form-control" placeholder="Photo URl">
           </div>
           <div class="mb-2">
-            <input type="email" class="form-control" placeholder="Email">
+            <input required v-model="contact.email" type="email" class="form-control" placeholder="Email">
           </div>
           <div class="mb-2">
-            <input type="number" class="form-control" placeholder="Mobile">
+            <input required v-model="contact.mobile" type="number" class="form-control" placeholder="Mobile">
           </div>
           <div class="mb-2">
-            <input type="text" class="form-control" placeholder="Company">
+            <input required v-model="contact.company" type="text" class="form-control" placeholder="Company">
           </div>
           <div class="mb-2">
-            <input type="text" class="form-control" placeholder="Title">
+            <input required v-model="contact.title" type="text" class="form-control" placeholder="Title">
           </div>
           <div class="mb-2">
-            <select class="form-control">
+            <select required v-model="contact.groupId" class="form-control" v-if="groups.length > 0">
               <option>Select Group</option>
+              <option :value="group.id" v-for="group of groups" :key="group.id">{{ group.name }}</option>
             </select>
           </div>
           <div class="mb-2">
@@ -40,15 +41,66 @@
         </form>
       </div>
       <div class="col-md-4">
-        <img src="../assets/user.png">
+        <img :src="contact.photo">
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ContactServices } from '../services/ContactServices.js';
+
 export default {
    name: 'EditContact',
+
+   data() {
+    return {
+      contactId: this.$route.params.contactId,
+      contact: {
+        name: '',
+        company: '',
+        email: '',
+        title: '',
+        mobile: '',
+        photo: '',
+        groupId: ''
+      },
+      loading: false,
+      errorMessage: null,
+      groups: []
+    }
+   },
+
+   async created() {
+    try {
+      this.loading = true;
+      const response = await ContactServices.getContact(this.contactId);
+      const groupResponse = await ContactServices.getAllGroups();
+      this.contact = response.data;
+      this.groups = groupResponse.data;
+      this.loading = false;
+    }
+    catch(error) {
+      this.errorMessage = error;
+      this.loading = false;
+    }
+   },
+
+   methods: {
+    async submitUpdate() {
+      try {
+        const response = await ContactServices.updateContact(this.contact, this.contactId)
+        if (response) {
+          return this.$router.push('/')
+        } else {
+          return this.$router.push('/contact/edit/${this.contactId}');
+        }
+      }
+      catch(error) {
+        console.log(error)
+      }
+    }
+   },
 }
 </script>
 

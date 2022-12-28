@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export class ContactServices {
-    static serverUrl = `http://localhost:3000/`;
+    static serverUrl = `http://localhost:3000`;
 
     static getAllContacts() {
         const dataUrl = `${this.serverUrl}/contacts`;
