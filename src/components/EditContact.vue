@@ -89,7 +89,8 @@ export default {
    methods: {
     async submitUpdate() {
       try {
-        const response = await ContactServices.updateContact(this.contact, this.contactId)
+        const response = await ContactServices.updateContact(this.contact, this.contactId);
+        console.log(response)
         if (response) {
           return this.$router.push('/')
         } else {

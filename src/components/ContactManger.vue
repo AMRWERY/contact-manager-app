@@ -48,7 +48,7 @@
                   <li class="list-group-item">Mobile Number: <span class="fw-bold">{{ contact.mobile }}</span></li>
                 </ul>
               </div>
-              <div class="col-sm-1 flex-column ">
+              <div class="col-sm-1 flex-column">
                 <router-link :to="`/contact/view/${contact.id}`" class="btn btn-warning my-1"><i class="fa fa-eye"></i></router-link>
                 <router-link :to="`/contact/edit/${contact.id}`" class="btn btn-primary my-1"><i class="fa fa-pen"></i></router-link>
                 <button @click="deleteContact(contact.id)" class="btn btn-danger my-1"><i class="fa fa-trash"></i></button>
